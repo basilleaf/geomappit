@@ -11,7 +11,7 @@
 <script>
   function initialize() {
 
-    // all the google fusion tables to query:
+    // all the google fusion tables to query
     all_queries = [
       {
         // geology firehose
@@ -40,7 +40,6 @@
       },      
     ];
 
-
     // set up the map
     var oakland = new google.maps.LatLng(37.343, -120.103);
     map = new google.maps.Map(document.getElementById('map_canvas'), {
@@ -48,7 +47,6 @@
       zoom: 6,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-
 
     // load all the layers
     all_layers = []
