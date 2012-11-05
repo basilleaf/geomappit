@@ -1,118 +1,90 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Google Maps JavaScript API v3 Example: Fusion Tables Layer</title>
-    <link href="default.css" rel="stylesheet">
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<title>Google Maps JavaScript API v3 Example: Fusion Tables Layer</title>
+<link href="default.css" rel="stylesheet">
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
-      function initialize() {
+<script>
+  function initialize() {
 
-        var oakland = new google.maps.LatLng(37.343, -120.103);
-
-        map = new google.maps.Map(document.getElementById('map_canvas'), {
-          center: oakland,
-          zoom: 6,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-
-        // start layer 1 - geology firehose
-        layer1 = new google.maps.FusionTablesLayer({
-          query: {
-            select: '\'geometry\'',
-            from: '1vgYq0-ySwDLUd0DBp1WTf_9Trzt9Tzz1GVOWJgs',
-            where: 'name=Carboniferous'
-          }
-        });
-        layer1.setMap(map);
-
-        // start layer 2 - soil
-        layer2 = new google.maps.FusionTablesLayer({
-          query: {
-            select: '\'geometry\'',
-            from: '1G8UMrxHtxRJeU6WTRAKQ9mr8MSrDDcisijmB1tM'
-          }
-        });
-        layer2.setMap(map);
-
-        // start layer 3 - hot springs
-        layer3 = new google.maps.FusionTablesLayer({
-          query: {
-            select: '\'geometry\'',
-            from: '18Oatg7oZg-uThL9chwkHUGH4fMS9uXIHOAPYPy8',
-          }
-        });
-        layer3.setMap(map);
+    // all the google fusion tables to query:
+    all_queries = [
+      {
+        // geology firehose
+        select: '\'geometry\'',
+        from: '1vgYq0-ySwDLUd0DBp1WTf_9Trzt9Tzz1GVOWJgs',
+      },
+      {
+        // soil
+        select: '\'geometry\'',
+        from: '1G8UMrxHtxRJeU6WTRAKQ9mr8MSrDDcisijmB1tM'
+      },
+      {
+      // hot springs
+        select: '\'geometry\'',
+        from: '18Oatg7oZg-uThL9chwkHUGH4fMS9uXIHOAPYPy8',
+      },
+      {
+        // volcanoes
+        select: '\'geometry\'',
+        from: '10KmXRt8hAJHV8YGI2g0afmcAdsviq4n0iMDk8U0',
+      },          
+      {
+        // hydrothermal vents
+        select: '\'geometry\'',
+        from: '1X_9f15e8D7U3PK7YbNTtgbNTR-GsfPQegrL6eBI',
+      },      
+    ];
 
 
-        // start layer 4 - volcanoes
-        layer4 = new google.maps.FusionTablesLayer({
-          query: {
-            select: '\'geometry\'',
-            from: '10KmXRt8hAJHV8YGI2g0afmcAdsviq4n0iMDk8U0',
-          }
-        });
-        layer4.setMap(map);
+    // set up the map
+    var oakland = new google.maps.LatLng(37.343, -120.103);
+    map = new google.maps.Map(document.getElementById('map_canvas'), {
+      center: oakland,
+      zoom: 6,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
 
 
-      $("input").click(function() {
-        layer = $(this).val();
-
-        // omg this is janky!!! there is reason! 
-        if ($(this).is(':checked')) {
-          if (layer == 'layer1') {
-            layer1.setMap(map);
-          }
-          if (layer == 'layer2') {
-            layer2.setMap(map);
-          }
-          if (layer == 'layer3') {
-            layer3.setMap(map);
-          }
-          if (layer == 'layer4') {
-            layer4.setMap(map);
-          }
-        } else {
-          if (layer == 'layer1') {
-            layer1.setMap(null);
-          }
-          if (layer == 'layer2') {
-            layer2.setMap(null);
-          }
-          if (layer == 'layer3') {
-            layer3.setMap(null);
-          }
-          if (layer == 'layer4') {
-            layer4.setMap(null);
-          }
-        }
-
+    // load all the layers
+    all_layers = []
+    for (k in all_queries) {
+      all_layers[k] = new google.maps.FusionTablesLayer({
+        query: all_queries[k]
       });
+      all_layers[k].setMap(map);
+    }
 
-
-
+    // add the clicky behaviors
+    $("input").click(function() {
+      layer = $(this).val().substring(5) - 1;
+      if ($(this).is(':checked')) {
+          all_layers[layer].setMap(map);
+      } else {
+          all_layers[layer].setMap(null);
       }
+    });
 
-    </script>
+  } // end Initialize
 
+</script>
+</head>
 
+<body onload="initialize()">
+  <div id="map_canvas"></div>
+  <div id = "control">
+    <ul>
+      <li><input class = "layer" type = "checkbox" value = "layer1" checked>geology</li>
+      <li><input class = "layer" type = "checkbox" value = "layer2" checked>soil</li>
+      <li><input class = "layer" type = "checkbox" value = "layer3" checked>hot springs</li>
+      <li><input class = "layer" type = "checkbox" value = "layer4" checked>volcanoes</li>
+      <li><input class = "layer" type = "checkbox" value = "layer5" checked>hydrothermal vents</li>
+  </div>
+</body>
 
-  </head>
-  <body onload="initialize()">
-    <div id="map_canvas"></div>
-    <div id = "control">
-      <ul>
-        <li><input class = "layer" type = "checkbox" value = "layer1" checked>geology</li>
-        <li><input class = "layer" type = "checkbox" value = "layer2" checked>soil</li>
-        <li><input class = "layer" type = "checkbox" value = "layer3" checked>hot springs</li>
-        <li><input class = "layer" type = "checkbox" value = "layer4" checked>volcanoes</li>
-    </div>
-
-
-  </body>
 </html>
 
