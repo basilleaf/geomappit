@@ -58,30 +58,61 @@
     }
 
     // add the clicky behaviors
-    $("input").click(function() {
-      layer = $(this).val().substring(5) - 1;
-      if ($(this).is(':checked')) {
-          all_layers[layer].setMap(map);
-      } else {
-          all_layers[layer].setMap(null);
-      }
+    $("li").click(function() {
+      element = $(this).find('input');
+      toggleLayer(element);
     });
 
+
   } // end Initialize
+
+
+  function toggleLayer(element) {
+    layer = $(element).val().substring(5) - 1;
+    if ($(element).is(':checked')) {
+        all_layers[layer].setMap(map);
+    } else {
+        all_layers[layer].setMap(null);
+    }
+  }
 
 </script>
 </head>
 
 <body onload="initialize()">
   <div id="map_canvas"></div>
-  <div id = "control">
-    <ul>
-      <li><input class = "layer" type = "checkbox" value = "layer1" checked>geology</li>
-      <li><input class = "layer" type = "checkbox" value = "layer2" checked>soil</li>
-      <li><input class = "layer" type = "checkbox" value = "layer3" checked>hot springs</li>
-      <li><input class = "layer" type = "checkbox" value = "layer4" checked>volcanoes</li>
-      <li><input class = "layer" type = "checkbox" value = "layer5" checked>hydrothermal vents</li>
-  </div>
+    <ul id = "control">
+      <li>
+        <label>
+          <input class = "layer" type = "checkbox" value = "layer1" checked>
+          geology
+        <label>
+      </li>
+      <li>
+        <label>
+          <input class = "layer" type = "checkbox" value = "layer2" checked>
+          soil
+        <label>
+      </li>
+      <li>
+        <label>
+          <input class = "layer" type = "checkbox" value = "layer3" checked>
+          hot springs
+        <label>
+      </li>
+      <li>
+        <label>
+          <input class = "layer" type = "checkbox" value = "layer4" checked>
+          volcanoes
+        <label>
+      </li>
+      <li>
+        <label>
+          <input class = "layer" type = "checkbox" value = "layer5" checked>
+          thermal vents
+        <label>
+      </li>  
+    </ul>  
 </body>
 
 </html>

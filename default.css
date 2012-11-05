@@ -20,18 +20,17 @@ html, body {
 }
 
 #control {
+  display:inline-block;
   background:white;
   padding:10px;
   border:1px solid gray;
   position:fixed;
-  top:73%;
+  top:63%;
   left:10px;
   z-index:100;
 }
-#control ul {
+ul#control li{
   margin:0; padding:0;
- }
-#control ul li{
-  margin:0; padding:0;
+  padding:5px 0px;
   list-style-type: none;
 }
